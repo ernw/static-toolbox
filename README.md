@@ -10,6 +10,8 @@ Precompiled versions of Nmap are available for the following operating systems/a
 
 * [Linux x86](bin/linux/x86) (nmap, ncat, nping)
 * [Linux x86_64](bin/linux/x86_64) (nmap, ncat, nping)
+* [Linux armhf](bin/linux/armhf) (nmap, ncat, nping)
+* [Linux aarch64](bin/linux/aarch64) (nmap, ncat, nping)
 * [Windows x86](bin/windows/x86) (nmap)
 
 ### Packaged Archives
@@ -22,3 +24,17 @@ Precompiled versions of socat are available for the following operating systems/
 
 * [Linux x86](bin/linux/x86)
 * [Linux x86_64](bin/linux/x86_64)
+
+# Building with Vagrant
+
+The recipes are supposed to be built in Docker containers. In case Docker is not available, it is recommended to use Vagrant to built everything in a VM, e.g. Nmap for Linux x86:
+
+```
+vagrant up
+vagrant ssh
+cd /vagrant/recipes/nmap/linux_x86
+sudo docker build -t static-toolbox-nmap-x86 .
+sudo docker run -v $(pwd)/output:/output static-toolbox-nmap-x86
+```
+
+This is also the recommended way to run the build scripts without Docker without creating directories like `/build` and `/output` on your host system.
