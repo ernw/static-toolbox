@@ -15,7 +15,6 @@ fetch(){
     cd /build/binutils-gdb
     git checkout binutils-2_30
     cd -
-    GDB_COMMIT=$(cd /build/binutils-gdb/ && git rev-parse --short HEAD)
 }
 
 build_musl_x86_64() {
@@ -110,14 +109,14 @@ build_gdb_x86_64() {
 }
 
 build_x86_64(){
-    OUT_DIR_x86_64=/output/`uname | tr 'A-Z' 'a-z'`/x86_64
-    mkdir -p $OUT_DIR_x86_64
+    OUT_DIR_x86=/output/`uname | tr 'A-Z' 'a-z'`/x86_64
+    mkdir -p $OUT_DIR_x86
     build_musl_x86_64
     build_gdb_x86_64
-    GDB_VERSION=$(/build/binutils-gdb/gdb/gdb --version |head -n1 |awk '{print $4}')
-    GDBSERVER_VERSION=$(/build/binutils-gdb/gdb/gdbserver/gdbserver --version |head -n1 |awk '{print $4}')
-    cp /build/binutils-gdb/gdb/gdb "${OUT_DIR_x86_64}/gdb-${GDB_VERSION}-${GDB_COMMIT}"
-    cp /build/binutils-gdb/gdb/gdbserver/gdbserver "${OUT_DIR_x86_64}/gdbserver-${GDBSERVER_VERSION}-${GDB_COMMIT}"
+    GDB_VERSION="-$(/build/binutils-gdb/gdb/gdb --version |head -n1 |awk '{print $4}')"
+    GDBSERVER_VERSION="-$(/build/binutils-gdb/gdb/gdbserver/gdbserver --version |head -n1 |awk '{print $4}')"
+    cp /build/binutils-gdb/gdb/gdb "${OUT_DIR}/gdb-x86_64${GDB_VERSION}"
+    cp /build/binutils-gdb/gdb/gdbserver/gdbserver "${OUT_DIR}/gdbserver-x86_64${GDBSERVER_VERSION}"
     echo "[+] Finished building x86_64"
 }
 

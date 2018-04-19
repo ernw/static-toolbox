@@ -25,6 +25,15 @@ Precompiled versions of socat are available for the following operating systems/
 * [Linux x86](bin/linux/x86)
 * [Linux x86_64](bin/linux/x86_64)
 
+## GDB
+
+Precompiled versions of `gdb` and `gdbserver` are available for the following operating systems/architecturs:
+
+* [Linux x86](bin/linux/x86)
+* [Linux x86_64](bin/linux/x86_64)
+* [Linux armhf](bin/linux/armhf)
+* [Linux aarch64](bin/linux/aarch64)
+
 # Building with Vagrant
 
 The recipes are supposed to be built in Docker containers. In case Docker is not available, it is recommended to use Vagrant to built everything in a VM, e.g. Nmap for Linux x86:
