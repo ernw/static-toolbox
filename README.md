@@ -4,6 +4,10 @@ This repository includes prebuild static binaries and build-recipes for various 
 
 The Linux versions are compiled with the [musl-cross](https://github.com/takeshixx/musl-cross) toolchain and the [openssl-pm-snapshot](https://github.com/drwetter/openssl-pm-snapshot) fork of OpenSSL in order to support a wide range of SSL/TLS features (Warning: some of them are insecure!).
 
+## Release Packages
+
+Precompiled and packaged releases are available in the tags/release section.
+
 ## Nmap
 
 Precompiled versions of Nmap are available for the following operating systems/architectures:
@@ -13,10 +17,6 @@ Precompiled versions of Nmap are available for the following operating systems/a
 * Linux armhf (nmap, ncat, nping)
 * Linux aarch64 (nmap, ncat, nping)
 * Windows x86 (nmap)
-
-### Packaged Archives
-
-For Nmap it is recommended to use one of the [packaged](packaged/) archives. These include the nmap, ncat and nping binaries and also the Nmap data directory that contains service probes and NSE scripts.
 
 ## Socat
 
