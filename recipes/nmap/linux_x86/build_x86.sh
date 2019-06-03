@@ -6,8 +6,7 @@ NMAP_COMMIT=
 
 fetch(){
     if [ ! -d "/build/musl" ];then
-        #git clone https://github.com/GregorR/musl-cross.git /build/musl
-        git clone https://github.com/takeshixx/musl-cross.git /build/musl
+        git clone https://github.com/GregorR/musl-cross.git /build/musl
     fi
     if [ ! -d "/build/openssl" ];then
         git clone https://github.com/drwetter/openssl-pm-snapshot.git /build/openssl
