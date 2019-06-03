@@ -12,7 +12,9 @@ RUN apt-get update && \
         wget \
         git \
         pkg-config \
-        python
+        python \
+        flex \
+        bison
 RUN mkdir /build
 ADD . /build
 RUN chmod +x /build/build_x86.sh
