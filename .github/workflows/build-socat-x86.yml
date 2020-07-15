@@ -1,0 +1,27 @@
+name: socat x86
+on:
+  workflow_dispatch
+jobs:
+    build:
+        name: Build socat x86
+        runs-on: ubuntu-latest
+        container: muslcc/x86_64:i686-linux-musl
+        steps:
+          - name: Install dependencies
+            run: apk update && apk add bash git perl make cmake flex bison automake autoconf libtool qemu-arm qemu-aarch64 file texinfo zip 
+          - name: Install testing dependencies
+            run: apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing yodl
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: Build socat
+            id: build_socat
+            run: $GITHUB_WORKSPACE/build/targets/build_socat.sh x86
+          - name: List build directory
+            run: ls -la /build
+          - name: List build artifacts
+            run: ls -la /output
+          - name: Upload artifacts
+            uses: actions/upload-artifact@v2
+            with:
+                name: ${{ steps.build_socat.outputs.PACKAGED_NAME }}
+                path: ${{ steps.build_socat.outputs.PACKAGED_NAME_PATH }}

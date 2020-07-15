@@ -1,0 +1,34 @@
+name: socat AARCH64
+on:
+  workflow_dispatch
+jobs:
+    build:
+        name: Build socat AARCH64
+        runs-on: ubuntu-latest
+        container: muslcc/x86_64:aarch64-linux-musl
+        steps:
+          - name: Install dependencies
+            run: apk update && apk add bash git perl make cmake flex bison automake autoconf libtool qemu-arm qemu-aarch64 file texinfo zip 
+          - name: Install testing dependencies
+            run: apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing yodl
+          - name: Install build compiler
+            run: /bin/sh -c "apk update && apk upgrade && apk add --no-cache curl rsync sudo util-linux && cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
+            env:
+                ARCH: x86_64-linux-musl
+                HOST: https://more.musl.cc/9.2.1/x86_64-linux-musl
+                TEMP: /tmp
+                USER: 0
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: Build socat
+            id: build_socat
+            run: $GITHUB_WORKSPACE/build/targets/build_socat.sh aarch64
+          - name: List build directory
+            run: ls -la /build
+          - name: List build artifacts
+            run: ls -la /output
+          - name: Upload artifacts
+            uses: actions/upload-artifact@v2
+            with:
+                name: ${{ steps.build_socat.outputs.PACKAGED_NAME }}
+                path: ${{ steps.build_socat.outputs.PACKAGED_NAME_PATH }}

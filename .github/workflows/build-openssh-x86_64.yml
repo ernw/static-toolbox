@@ -1,0 +1,25 @@
+name: OpenSSH x86_64
+on:
+  workflow_dispatch
+jobs:
+    build:
+        name: Build OpenSSH x86_64
+        runs-on: ubuntu-latest
+        container: muslcc/x86_64:x86_64-linux-musl
+        steps:
+          - name: Install dependencies
+            run: apk update && apk add bash git perl make cmake flex bison automake autoconf libtool qemu-arm qemu-aarch64 file texinfo zip
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: Build OpenSSH
+            id: build_openssh
+            run: $GITHUB_WORKSPACE/build/targets/build_openssh.sh x86_64
+          - name: List build directory
+            run: ls -la /build
+          - name: List build artifacts
+            run: ls -la /output
+          - name: Upload artifacts
+            uses: actions/upload-artifact@v2
+            with:
+                name: ${{ steps.build_openssh.outputs.PACKAGED_NAME }}
+                path: ${{ steps.build_openssh.outputs.PACKAGED_NAME_PATH }}
