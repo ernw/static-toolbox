@@ -1,0 +1,31 @@
+name: strace x86_64
+on:
+  workflow_dispatch
+jobs:
+    build:
+        name: Build strace x86_64
+        runs-on: ubuntu-latest
+        container: muslcc/x86_64:x86_64-linux-musl
+        steps:
+
+          - name: Build strace
+            run: |
+              apk update && apk add git make gawk autoconf automake coreutils
+              git clone https://github.com/strace/strace
+              cd strace
+              git checkout v5.7
+              ./bootstrap
+              export LDFLAGS='-static -pthread'
+              ./configure
+              make CFLAGS="-w" -j4
+
+          - name: List build dir
+            run: |
+              pwd
+              ls -la
+
+          - name: Upload artifacts
+            uses: actions/upload-artifact@v2
+            with:
+                name: strace-5.7
+                path: /__w/workflow-test/workflow-test/strace/strace
