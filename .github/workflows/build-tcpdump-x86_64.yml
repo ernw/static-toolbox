@@ -8,32 +8,24 @@ jobs:
         container: muslcc/x86_64:x86_64-linux-musl
         steps:
 
-          - name: Build tcpdump
-            run: |
-              cd
-              apk update && apk add flex bison wget make
-              wget https://www.tcpdump.org/release/libpcap-1.9.1.tar.gz
-              tar xzf libpcap-1.9.1.tar.gz
-              cd libpcap-1.9.1/
-              ./configure --with-pcap=linux
-              make -j2
-              export LIBPCAP_PATH=$(pwd)
-              cd
-              wget https://www.tcpdump.org/release/tcpdump-4.9.3.tar.gz
-              tar xzf tcpdump-4.9.3.tar.gz
-              cd tcpdump-4.9.3/
-              export CFLAGS="-static -I${LIBPCAP_PATH} -L${LIBPCAP_PATH}"
-              export CPPFLAGS=-static
-              export LDFLAGS=-static
-              ./configure
-              make -j2
-              pwd
+          - name: Install dependencies
+            run: apk update && apk add bash git perl make cmake flex bison automake autoconf libtool qemu-arm qemu-aarch64 file texinfo zip wget
 
-          - name: List build dir
-            run: ls -la
+          - name: Checkout
+            uses: actions/checkout@v2
+
+          - name: Build tcpdump
+            id: build_tcpdump
+            run: $GITHUB_WORKSPACE/build/targets/build_tcpdump.sh x86_64
+
+          - name: List build directory
+            run: ls -la /build
+
+          - name: List build artifacts
+            run: ls -la /output
 
           - name: Upload artifacts
             uses: actions/upload-artifact@v2
             with:
-                name: tcpdump-4.9.3
-                path: /github/home/tcpdump-4.9.3/tcpdump
+                name: ${{ steps.build_tcpdump.outputs.PACKAGED_NAME }}
+                path: ${{ steps.build_tcpdump.outputs.PACKAGED_NAME_PATH }}
