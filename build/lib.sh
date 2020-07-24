@@ -3,6 +3,7 @@ GIT_OPENSSL="https://github.com/drwetter/openssl-pm-snapshot.git"
 GIT_BINUTILS_GDB="https://github.com/bminor/binutils-gdb.git"
 GIT_READLINE="https://git.savannah.gnu.org/git/readline.git"
 GIT_NCURSES="https://github.com/ThomasDickey/ncurses-snapshots.git"
+GIT_LIBPCAP="https://github.com/the-tcpdump-group/libpcap.git"
 
 BUILD_DIRECTORY="/build"
 OUTPUT_DIRECTORY="/output"
@@ -264,4 +265,20 @@ lib_build_ncurses(){
     eval "$CMD"
     make -j4
     echo "[+] Finished building ncurses ${CURRENT_ARCH}"
+}
+
+lib_build_libpcap(){
+    fetch "$GIT_LIBPCAP" "${BUILD_DIRECTORY}/libpcap" git
+    cd "${BUILD_DIRECTORY}/libpcap" || { echo "Cannot cd to ${BUILD_DIRECTORY}/libpcap"; exit 1; }
+    git clean -fdx
+    git checkout libpcap-1.9.1
+    CFLAGS="${GCC_OPTS}" \
+        CXXFLAGS="${GXX_OPTS}" \
+        ./configure \
+            --host="$(get_host_triple)" \
+            --with-pcap=linux \
+            --disable-shared \
+            --enable-static
+    make -j4
+    echo "[+] Finished building libpcap ${CURRENT_ARCH}"
 }
