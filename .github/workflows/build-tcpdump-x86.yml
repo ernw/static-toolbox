@@ -1,0 +1,31 @@
+name: tcpdump x86
+on:
+  workflow_dispatch
+jobs:
+    build:
+        name: Build tcpdump x86
+        runs-on: ubuntu-latest
+        container: muslcc/x86_64:i686-linux-musl
+        steps:
+
+          - name: Install dependencies
+            run: apk update && apk add bash git perl make cmake flex bison automake autoconf libtool file texinfo zip wget
+
+          - name: Checkout
+            uses: actions/checkout@v2
+
+          - name: Build tcpdump
+            id: build_tcpdump
+            run: $GITHUB_WORKSPACE/build/targets/build_tcpdump.sh x86
+
+          - name: List build directory
+            run: ls -la /build
+
+          - name: List build artifacts
+            run: ls -la /output
+
+          - name: Upload artifacts
+            uses: actions/upload-artifact@v2
+            with:
+                name: ${{ steps.build_tcpdump.outputs.PACKAGED_NAME }}
+                path: ${{ steps.build_tcpdump.outputs.PACKAGED_NAME_PATH }}
