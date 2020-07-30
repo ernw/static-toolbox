@@ -13,78 +13,51 @@ init_lib $1
 build_gdb() {
     fetch "$GIT_BINUTILS_GDB" "${BUILD_DIRECTORY}/binutils-gdb" git
     cd "${BUILD_DIRECTORY}/binutils-gdb/" || { echo "Cannot cd to ${BUILD_DIRECTORY}/binutils-gdb/"; exit 1; }
-    git checkout binutils-2_35-branch
-    #git clean -fdx
+    git clean -fdx
+    git checkout gdb-8.3.1-release
+
+    CMD="CFLAGS=\"${GCC_OPTS}\" "
+    CMD+="CXXFLAGS=\"${GXX_OPTS}\" "
+    CMD+="LDFLAGS=\"-static -pthread\" "
+    if [ "$CURRENT_ARCH" != "x86" ] && "$CURRENT_ARCH" != "x86_64" ];then
+        CMD+="CC_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc\" "
+        CMD+="CPP_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-g++\" "
+    fi
+    CMD+="./configure --target=$(get_host_triple) --host=x86_64-unknown-linux-musl "
+    CMD+="--disable-shared --enable-static"
+
+    GDB_CMD="${CMD} --disable-interprocess-agent"
 
     cd "${BUILD_DIRECTORY}/binutils-gdb/bfd"
-    CC="gcc ${GCC_OPTS}" \
-        CXX="g++ ${GXX_OPTS}" \
-        ./configure \
-            --host="$(get_host_triple)" \
-            --disable-shared \
-            --enable-static
+    eval "$CMD"
     make -j4
     
     cd "${BUILD_DIRECTORY}/binutils-gdb/readline"
-    CC="gcc ${GCC_OPTS}" \
-        CXX="g++ ${GXX_OPTS}" \
-        ./configure \
-            --host="$(get_host_triple)" \
-            --disable-shared \
-            --enable-static
+    eval "$CMD"
     make -j4
     
     cd "${BUILD_DIRECTORY}/binutils-gdb/opcodes"
-    CC="gcc ${GCC_OPTS}" \
-        CXX="g++ ${GXX_OPTS}" \
-        ./configure \
-            --host="$(get_host_triple)" \
-            --disable-shared \
-            --enable-static
+    eval "$CMD"
     make -j4
     
     cd "${BUILD_DIRECTORY}/binutils-gdb/libiberty"
-    CC="gcc ${GCC_OPTS}" \
-        CXX="g++ ${GXX_OPTS}" \
-        ./configure \
-            --host="$(get_host_triple)" \
-            --disable-shared \
-            --enable-static
+    eval "$CMD"
     make -j4
     
     cd "${BUILD_DIRECTORY}/binutils-gdb/libdecnumber"
-    CC="gcc ${GCC_OPTS}" \
-        CXX="g++ ${GXX_OPTS}" \
-        ./configure \
-            --host="$(get_host_triple)" \
-            --disable-shared \
-            --enable-static
+    eval "$CMD"
     make -j4
     
     cd "${BUILD_DIRECTORY}/binutils-gdb/zlib"
-    CC="gcc ${GCC_OPTS}" \
-        CXX="g++ ${GXX_OPTS}" \
-        /bin/bash ./configure \
-            --host="$(get_host_triple)" \
-            --enable-static
+    eval "$CMD"
     make -j4
 
     cd "${BUILD_DIRECTORY}/binutils-gdb/gdb"
-    CC="gcc ${GCC_OPTS}" \
-        CXX="g++ ${GXX_OPTS}" \
-        ./configure \
-            --enable-static=yes \
-            --host="$(get_host_triple)" \
-            --disable-interprocess-agent
+    eval "$GDB_CMD"
     make -j4
     
     cd "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdbserver"
-    CC="gcc ${GCC_OPTS}" \
-        CXX="g++ ${GXX_OPTS}" \
-        ./configure \
-            --enable-static=yes \
-            --host="$(get_host_triple)" \
-            --disable-interprocess-agent
+    eval "$GDB_CMD"
     make -j4
     
     strip "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdb" "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdbserver/gdbserver"
