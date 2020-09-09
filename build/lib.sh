@@ -157,20 +157,23 @@ get_version(){
 }
 
 lib_create_tmp_dir(){
-    local tmp_dir=$(mktemp -dt -p ${TMP_DIR} tmpdir.XXXXXX)
+    local tmp_dir
+    tmp_dir=$(mktemp -dt -p "${TMP_DIR}" tmpdir.XXXXXX)
     echo "$tmp_dir"
 }
 
 lib_check_lib_arch(){
     lib=$1
+    local tmp_dir
+    local output
     if [ ! -f "$lib" ];then
         echo ""
         return
     fi
-    local tmp_dir=$(lib_create_tmp_dir)
+    tmp_dir=$(lib_create_tmp_dir)
     cp "$lib" "$tmp_dir"
     bash -c "cd ${tmp_dir}; ar x $(basename ${lib})"
-    local output=$(find "${tmp_dir}" -name "*.o" -exec file {} \;)
+    output=$(find "${tmp_dir}" -name "*.o" -exec file {} \;)
     if echo "$output" | grep -q "Intel 80386";then
         echo "Arch of ${lib} is x86" >&2
         echo "x86"
@@ -259,7 +262,7 @@ lib_build_ncurses(){
     CMD="CFLAGS=\"${GCC_OPTS}\" "
     CMD+="CXXFLAGS=\"${GXX_OPTS}\" "
     CMD+="./configure --host=$(get_host_triple) --disable-shared --enable-static"
-    if [ "$CURRENT_ARCH"!="x86" -a "$CURRENT_ARCH"!="x86_64" ];then
+    if [ "$CURRENT_ARCH" != "x86" ] && [ "$CURRENT_ARCH" != "x86_64" ];then
         CMD+=" --with-build-cc=/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc"
     fi
     eval "$CMD"

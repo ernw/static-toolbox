@@ -65,8 +65,8 @@ build_gdb() {
 
 main() {
     build_gdb
-    if [ ! -f "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdb" -o \
-         ! -f "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdbserver/gdbserver" ];then
+    if [ ! -f "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdb" ] || \
+        [ ! -f "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdbserver/gdbserver" ];then
         echo "[-] Building GDB ${CURRENT_ARCH} failed!"
         exit 1
     fi
