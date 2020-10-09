@@ -6,6 +6,11 @@ The Linux versions are compiled with the musl-cross toolchain and the openssl-pm
 
 Compilation is done automatically with GitHub Actions.
 
+## Current Limitations
+
+* Downloading of build artifacts in GitHub Ations currently requires a GitHub account
+* Blobs in build artifacts are zipped by the GitHub frontend by default, even zip files themselves! Build artifact zips may contain other zip files.
+
 ## Tools
 
 || x86 | x86_64 | ARMHF | AARCH64 |
