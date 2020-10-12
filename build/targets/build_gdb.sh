@@ -32,6 +32,7 @@ build_gdb() {
     mkdir build
     cd build
     eval "$GDB_CMD"
+    ls -la
     make -j4
     
     strip "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdb" "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdbserver/gdbserver"
