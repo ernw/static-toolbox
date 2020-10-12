@@ -33,6 +33,22 @@ build_gdb() {
     cd build
     eval "$GDB_CMD"
     ls -la
+    
+    cd "${BUILD_DIRECTORY}/binutils-gdb/"
+    MAKE_PROG="${MAKE-make}"
+    MAKE="${MAKE_PROG} AR=true LINK=true"
+    export MAKE
+    ${MAKE} $* all-libiberty
+    ${MAKE} $* all-intl
+    ${MAKE} $* all-bfd
+    cd binutils
+    MAKE="${MAKE_PROG}"
+    export MAKE
+    ${MAKE} $* ar_DEPENDENCIES= ar_LDADD='../bfd/*.o ../libiberty/*.o `if test -f ../intl/gettext.o; then echo '../intl/*.o'; fi`' ar
+    ls -la
+    cp ar /usr/bin
+
+    cd "${BUILD_DIRECTORY}/binutils-gdb/build"
     make -j4
     
     strip "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdb" "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdbserver/gdbserver"
