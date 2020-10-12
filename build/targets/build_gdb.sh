@@ -23,12 +23,14 @@ build_gdb() {
         CMD+="CC_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc\" "
         CMD+="CPP_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-g++\" "
     fi
-    CMD+="./configure --target=$(get_host_triple) --host=x86_64-unknown-linux-musl "
+    CMD+="${BUILD_DIRECTORY}/binutils-gdb/configure --target=$(get_host_triple) --host=x86_64-unknown-linux-musl "
     CMD+="--disable-shared --enable-static"
 
     GDB_CMD="${CMD} --disable-interprocess-agent"
 
     cd "${BUILD_DIRECTORY}/binutils-gdb/"
+    mkdir build
+    cd build
     eval "$GDB_CMD"
     make -j4
     
