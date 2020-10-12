@@ -51,6 +51,10 @@ build_gdb() {
     cd "${BUILD_DIRECTORY}/binutils-gdb/zlib"
     eval "$CMD"
     make -j4
+    
+    cd "${BUILD_DIRECTORY}/binutils-gdb/gnulib"
+    eval "$CMD"
+    make -j4
 
     cd "${BUILD_DIRECTORY}/binutils-gdb/gdb"
     eval "$GDB_CMD"
