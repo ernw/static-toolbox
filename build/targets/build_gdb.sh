@@ -28,39 +28,7 @@ build_gdb() {
 
     GDB_CMD="${CMD} --disable-interprocess-agent"
 
-    cd "${BUILD_DIRECTORY}/binutils-gdb/bfd"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/readline"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/opcodes"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/libiberty"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/libdecnumber"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/zlib"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/gnulib"
-    eval "$CMD"
-    make -j4
-
-    cd "${BUILD_DIRECTORY}/binutils-gdb/gdb"
-    eval "$GDB_CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdbserver"
+    cd "${BUILD_DIRECTORY}/binutils-gdb/"
     eval "$GDB_CMD"
     make -j4
     
