@@ -1,0 +1,124 @@
+name: Nmap
+on:
+  workflow_dispatch
+jobs:
+
+    build-x86:
+      name: Build Nmap x86
+      runs-on: ubuntu-latest
+      container: muslcc/x86_64:i686-linux-musl
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
+
+        - name: Build Nmap
+          run: $GITHUB_WORKSPACE/build/targets/build_nmap.sh x86
+
+        - name: Package Nmap
+          id: package_nmap
+          run: $GITHUB_WORKSPACE/package/targets/nmap/package.sh /output x86
+
+        - name: Upload tarball
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.package_nmap.outputs.PACKAGED_TARBALL }}
+              path: ${{ steps.package_nmap.outputs.PACKAGED_TARBALL_PATH }}
+
+        - name: Upload zip
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.package_nmap.outputs.PACKAGED_ZIP }}
+              path: ${{ steps.package_nmap.outputs.PACKAGED_ZIP_PATH }}
+
+    build-x86_64:
+      name: Build Nmap x86_64
+      runs-on: ubuntu-latest
+      container: muslcc/x86_64:x86_64-linux-musl
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
+
+        - name: Build Nmap
+          run: $GITHUB_WORKSPACE/build/targets/build_nmap.sh x86_64
+
+        - name: Package Nmap
+          id: package_nmap
+          run: $GITHUB_WORKSPACE/package/targets/nmap/package.sh /output x86_64
+
+        - name: Upload tarball
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.package_nmap.outputs.PACKAGED_TARBALL }}
+              path: ${{ steps.package_nmap.outputs.PACKAGED_TARBALL_PATH }}
+
+        - name: Upload zip
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.package_nmap.outputs.PACKAGED_ZIP }}
+              path: ${{ steps.package_nmap.outputs.PACKAGED_ZIP_PATH }}
+
+    build-armhf:
+      name: Build Nmap ARMHF
+      runs-on: ubuntu-latest
+      container: muslcc/x86_64:arm-linux-musleabihf
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
+
+        - name: Build Nmap
+          run: $GITHUB_WORKSPACE/build/targets/build_nmap.sh armhf
+
+        - name: Package Nmap
+          id: package_nmap
+          run: $GITHUB_WORKSPACE/package/targets/nmap/package.sh /output armhf
+
+        - name: Upload tarball
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.package_nmap.outputs.PACKAGED_TARBALL }}
+              path: ${{ steps.package_nmap.outputs.PACKAGED_TARBALL_PATH }}
+
+        - name: Upload zip
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.package_nmap.outputs.PACKAGED_ZIP }}
+              path: ${{ steps.package_nmap.outputs.PACKAGED_ZIP_PATH }}
+
+    build-aarch64:
+      name: Build Nmap AARCH64
+      runs-on: ubuntu-latest
+      container: muslcc/x86_64:aarch64-linux-musl
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
+
+        - name: Build Nmap
+          run: $GITHUB_WORKSPACE/build/targets/build_nmap.sh aarch64
+
+        - name: Package Nmap
+          id: package_nmap
+          run: $GITHUB_WORKSPACE/package/targets/nmap/package.sh /output aarch64
+
+        - name: Upload tarball
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.package_nmap.outputs.PACKAGED_TARBALL }}
+              path: ${{ steps.package_nmap.outputs.PACKAGED_TARBALL_PATH }}
+
+        - name: Upload zip
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.package_nmap.outputs.PACKAGED_ZIP }}
+              path: ${{ steps.package_nmap.outputs.PACKAGED_ZIP_PATH }}

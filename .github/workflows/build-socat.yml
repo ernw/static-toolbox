@@ -1,0 +1,115 @@
+name: socat
+on:
+  workflow_dispatch
+jobs:
+    build-x86:
+      name: Build socat x86
+      runs-on: ubuntu-latest
+      container: muslcc/x86_64:i686-linux-musl
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
+
+        - name: Install testing dependencies
+          run: apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing yodl
+
+        - name: Build socat
+          id: build_socat
+          run: $GITHUB_WORKSPACE/build/targets/build_socat.sh x86
+
+        - name: Upload artifacts
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.build_socat.outputs.PACKAGED_NAME }}
+              path: ${{ steps.build_socat.outputs.PACKAGED_NAME_PATH }}
+
+    build-x86_64:
+      name: Build socat x86_64
+      runs-on: ubuntu-latest
+      container: muslcc/x86_64:x86_64-linux-musl
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
+
+        - name: Install testing dependencies
+          run: apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing yodl
+
+        - name: Build socat
+          id: build_socat
+          run: $GITHUB_WORKSPACE/build/targets/build_socat.sh x86_64
+
+        - name: Upload artifacts
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.build_socat.outputs.PACKAGED_NAME }}
+              path: ${{ steps.build_socat.outputs.PACKAGED_NAME_PATH }}
+
+    build-armhf:
+      name: Build socat ARMHF
+      runs-on: ubuntu-latest
+      container: muslcc/x86_64:arm-linux-musleabihf
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
+
+        - name: Install testing dependencies
+          run: apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing yodl
+
+        - name: Install build compiler
+          run: /bin/sh -c "apk update && apk upgrade && apk add --no-cache curl rsync sudo util-linux && cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
+          env:
+              ARCH: x86_64-linux-musl
+              HOST: https://more.musl.cc/9.2.1/x86_64-linux-musl
+              TEMP: /tmp
+              USER: 0
+
+        - name: Build socat
+          id: build_socat
+          run: $GITHUB_WORKSPACE/build/targets/build_socat.sh armhf
+
+        - name: Upload artifacts
+          uses: actions/upload-artifact@v2
+          with:
+              name: ${{ steps.build_socat.outputs.PACKAGED_NAME }}
+              path: ${{ steps.build_socat.outputs.PACKAGED_NAME_PATH }}
+
+    build-aarch64:
+        name: Build socat AARCH64
+        runs-on: ubuntu-latest
+        container: muslcc/x86_64:aarch64-linux-musl
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+
+          - name: Install dependencies
+            run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
+
+          - name: Install testing dependencies
+            run: apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing yodl
+
+          - name: Install build compiler
+            run: /bin/sh -c "apk update && apk upgrade && apk add --no-cache curl rsync sudo util-linux && cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
+            env:
+                ARCH: x86_64-linux-musl
+                HOST: https://more.musl.cc/9.2.1/x86_64-linux-musl
+                TEMP: /tmp
+                USER: 0
+
+          - name: Build socat
+            id: build_socat
+            run: $GITHUB_WORKSPACE/build/targets/build_socat.sh aarch64
+
+          - name: Upload artifacts
+            uses: actions/upload-artifact@v2
+            with:
+                name: ${{ steps.build_socat.outputs.PACKAGED_NAME }}
+                path: ${{ steps.build_socat.outputs.PACKAGED_NAME_PATH }}
