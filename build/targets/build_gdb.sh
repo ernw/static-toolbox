@@ -14,50 +14,41 @@ build_gdb() {
     fetch "$GIT_BINUTILS_GDB" "${BUILD_DIRECTORY}/binutils-gdb" git
     cd "${BUILD_DIRECTORY}/binutils-gdb/" || { echo "Cannot cd to ${BUILD_DIRECTORY}/binutils-gdb/"; exit 1; }
     git clean -fdx
-    git checkout gdb-8.3.1-release
+    git checkout gdb-9.2-release
 
     CMD="CFLAGS=\"${GCC_OPTS}\" "
     CMD+="CXXFLAGS=\"${GXX_OPTS}\" "
     CMD+="LDFLAGS=\"-static -pthread\" "
-    if [ "$CURRENT_ARCH" != "x86" ] && "$CURRENT_ARCH" != "x86_64" ];then
+    if [ "$CURRENT_ARCH" != "x86" ] && [ "$CURRENT_ARCH" != "x86_64" ];then
         CMD+="CC_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc\" "
         CMD+="CPP_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-g++\" "
     fi
-    CMD+="./configure --target=$(get_host_triple) --host=x86_64-unknown-linux-musl "
+    CMD+="${BUILD_DIRECTORY}/binutils-gdb/configure --target=$(get_host_triple) --host=x86_64-unknown-linux-musl "
     CMD+="--disable-shared --enable-static"
 
     GDB_CMD="${CMD} --disable-interprocess-agent"
 
-    cd "${BUILD_DIRECTORY}/binutils-gdb/bfd"
-    eval "$CMD"
-    make -j4
+    cd "${BUILD_DIRECTORY}/binutils-gdb/"
+    mkdir build
+    cd build
+    eval "$GDB_CMD"
+    ls -la
     
-    cd "${BUILD_DIRECTORY}/binutils-gdb/readline"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/opcodes"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/libiberty"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/libdecnumber"
-    eval "$CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/zlib"
-    eval "$CMD"
-    make -j4
+    cd "${BUILD_DIRECTORY}/binutils-gdb/"
+    MAKE_PROG="${MAKE-make}"
+    MAKE="${MAKE_PROG} AR=true LINK=true"
+    export MAKE
+    ${MAKE} $* all-libiberty
+    ${MAKE} $* all-intl
+    ${MAKE} $* all-bfd
+    cd binutils
+    MAKE="${MAKE_PROG}"
+    export MAKE
+    ${MAKE} $* ar_DEPENDENCIES= ar_LDADD='../bfd/*.o ../libiberty/*.o `if test -f ../intl/gettext.o; then echo '../intl/*.o'; fi`' ar
+    ls -la
+    cp ar /usr/bin
 
-    cd "${BUILD_DIRECTORY}/binutils-gdb/gdb"
-    eval "$GDB_CMD"
-    make -j4
-    
-    cd "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdbserver"
-    eval "$GDB_CMD"
+    cd "${BUILD_DIRECTORY}/binutils-gdb/build"
     make -j4
     
     strip "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdb" "${BUILD_DIRECTORY}/binutils-gdb/gdb/gdbserver/gdbserver"
