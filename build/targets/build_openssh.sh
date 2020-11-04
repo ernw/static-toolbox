@@ -33,8 +33,8 @@ main() {
     lib_build_openssl
     lib_build_zlib
     build_openssh
-    if [ ! -f "${BUILD_DIRECTORY}/openssh-portable/ssh" ] || \
-        [ ! -f "${BUILD_DIRECTORY}/openssh-portable/sshd" ];then
+    if [ ! -f "${BUILD_DIRECTORY}/openssh-portable/ssh" -o \
+         ! -f "${BUILD_DIRECTORY}/openssh-portable/sshd" ];then
         echo "[-] Building OpenSSH ${CURRENT_ARCH} failed!"
         exit 1
     fi
@@ -43,7 +43,7 @@ main() {
     cp "${BUILD_DIRECTORY}/openssh-portable/sshd" "${OUTPUT_DIRECTORY}/sshd${OPENSSH_VERSION}"
     echo "[+] Finished building OpenSSH ${CURRENT_ARCH}"
 
-    OPENSSH_VERSION=$(echo "$OPENSSH_VERSION" | sed 's/-//')
+    OPENSSH_VERSION=$(echo $OPENSSH_VERSION | sed 's/-//')
     echo ::set-output name=PACKAGED_NAME::"${OPENSSH_VERSION}"
     echo ::set-output name=PACKAGED_NAME_PATH::"/output/*"
 }

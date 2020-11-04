@@ -40,13 +40,13 @@ set_http_proxy(){
 get_host_triple(){
     local host
     if [ "$CURRENT_ARCH" == "x86" ];then
-        host="i486-linux-musl"
+        host="i686-linux-musl"
     elif [ "$CURRENT_ARCH" == "x86_64" ];then
-        host="x86_64-unknown-linux-musl"
+        host="x86_64-linux-musl"
     elif [ "$CURRENT_ARCH" == "armhf" ];then
         host="arm-linux-musleabihf"
     elif [ "$CURRENT_ARCH" == "aarch64" ];then
-        host="aarch64-linux-musleabi"
+        host="aarch64-linux-musl"
     fi
     echo $host
 }
@@ -157,23 +157,20 @@ get_version(){
 }
 
 lib_create_tmp_dir(){
-    local tmp_dir
-    tmp_dir=$(mktemp -dt -p "${TMP_DIR}" tmpdir.XXXXXX)
+    local tmp_dir=$(mktemp -dt -p ${TMP_DIR} tmpdir.XXXXXX)
     echo "$tmp_dir"
 }
 
 lib_check_lib_arch(){
     lib=$1
-    local tmp_dir
-    local output
     if [ ! -f "$lib" ];then
         echo ""
         return
     fi
-    tmp_dir=$(lib_create_tmp_dir)
+    local tmp_dir=$(lib_create_tmp_dir)
     cp "$lib" "$tmp_dir"
     bash -c "cd ${tmp_dir}; ar x $(basename ${lib})"
-    output=$(find "${tmp_dir}" -name "*.o" -exec file {} \;)
+    local output=$(find "${tmp_dir}" -name "*.o" -exec file {} \;)
     if echo "$output" | grep -q "Intel 80386";then
         echo "Arch of ${lib} is x86" >&2
         echo "x86"
@@ -262,7 +259,7 @@ lib_build_ncurses(){
     CMD="CFLAGS=\"${GCC_OPTS}\" "
     CMD+="CXXFLAGS=\"${GXX_OPTS}\" "
     CMD+="./configure --host=$(get_host_triple) --disable-shared --enable-static"
-    if [ "$CURRENT_ARCH" != "x86" ] && [ "$CURRENT_ARCH" != "x86_64" ];then
+    if [ "$CURRENT_ARCH"!="x86" -a "$CURRENT_ARCH"!="x86_64" ];then
         CMD+=" --with-build-cc=/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc"
     fi
     eval "$CMD"

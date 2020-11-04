@@ -36,9 +36,9 @@ build_nmap() {
 main() {
     lib_build_openssl
     build_nmap
-    if [ ! -f "${BUILD_DIRECTORY}/nmap/nmap" ] || \
-        [ ! -f "${BUILD_DIRECTORY}/nmap/ncat/ncat" ] || \
-        [ ! -f "${BUILD_DIRECTORY}/nmap/nping/nping" ];then
+    if [ ! -f "${BUILD_DIRECTORY}/nmap/nmap" -o \
+         ! -f "${BUILD_DIRECTORY}/nmap/ncat/ncat" -o \
+         ! -f "${BUILD_DIRECTORY}/nmap/nping/nping" ];then
         echo "[-] Building Nmap ${CURRENT_ARCH} failed!"
         exit 1
     fi
@@ -63,7 +63,7 @@ main() {
     fi
     cd "${BUILD_DIRECTORY}/nmap"
     make install
-    cp -r /usr/local/share/nmap/* "$NMAP_DIR"
+    cp -r /usr/local/share/nmap/* $NMAP_DIR
     echo "[+] Copied data to Nmap data dir"
 }
 
