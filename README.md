@@ -13,6 +13,8 @@ Compilation is done automatically with GitHub Actions.
 
 ## Tools
 
+| Tool | Status |
+| ---- | ------ |
 |[Nmap](https://github.com/ernw/static-toolbox/actions?query=workflow%3A%22Nmap%22)|![Nmap](https://github.com/ernw/static-toolbox/workflows/Nmap/badge.svg)|
 |[OpenSSH](https://github.com/ernw/static-toolbox/actions?query=workflow%3A%22OpenSSH%22)|![OpenSSH](https://github.com/ernw/static-toolbox/workflows/OpenSSH/badge.svg)|
 |[socat](https://github.com/ernw/static-toolbox/actions?query=workflow%3A%22socat%22)|![socat](https://github.com/ernw/static-toolbox/workflows/socat/badge.svg)|
