@@ -11,7 +11,14 @@ Compilation is done automatically with GitHub Actions.
 * Downloading of build artifacts in GitHub Ations currently requires a GitHub account
 * Blobs in build artifacts are zipped by the GitHub frontend by default, even zip files themselves! Build artifact zips may contain other zip files.
 
-## Tools
+## Building Status
+
+The following table shows the building status for the current toolset. The following architectures are currently supported:
+
+* x86
+* x86_64
+* ARMHF
+* AARCH64
 
 | Tool | Status |
 | ---- | ------ |
