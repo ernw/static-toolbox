@@ -25,4 +25,5 @@ apk add \
     lttng-ust-dev \
     curl \
     rsync \
-    util-linux
+    util-linux \
+    patch
