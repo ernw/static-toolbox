@@ -68,7 +68,7 @@ jobs:
           run: /bin/sh -c "apk update && apk upgrade && apk add --no-cache curl rsync sudo util-linux && cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
           env:
               ARCH: x86_64-linux-musl
-              HOST: https://more.musl.cc/9.2.1/x86_64-linux-musl
+              HOST: http://musl.cc/
               TEMP: /tmp
               USER: 0
 
@@ -100,7 +100,7 @@ jobs:
             run: /bin/sh -c "apk update && apk upgrade && apk add --no-cache curl rsync sudo util-linux && cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
             env:
                 ARCH: x86_64-linux-musl
-                HOST: https://more.musl.cc/9.2.1/x86_64-linux-musl
+                HOST: http://musl.cc/
                 TEMP: /tmp
                 USER: 0
 
