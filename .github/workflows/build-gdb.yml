@@ -53,9 +53,26 @@ jobs:
       - name: Install dependencies
         run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
 
+      - name: Install build compiler
+        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
+        env:
+            ARCH: x86_64-linux-musl
+            HOST: http://musl.cc/
+            TEMP: /tmp
+            USER: 0
+
+      - name: Install dependencies workaround
+        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
+        env:
+            ARCH: x86_64-linux-musl
+            HOST: http://musl.cc/
+            TEMP: /tmp
+            USER: 0
+
       - name: Build GDB
         id: build_gdb
         run: |
+          export PATH="$PATH:/x86_64-linux-musl-cross/bin"
           $GITHUB_WORKSPACE/build/targets/build_gdb.sh x86_64
         
       - name: Upload artifacts
