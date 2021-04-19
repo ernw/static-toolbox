@@ -1,12 +1,16 @@
 #!/bin/bash
-set -e
-set -o pipefail
-set -x
+if [ -z "$GITHUB_WORKSPACE" ];then
+    echo "GITHUB_WORKSPACE environemnt variable not set!"
+    exit 1
+fi
 if [ "$#" -ne 1 ];then
     echo "Usage: ${0} [x86|x86_64|armhf|aarch64]"
     echo "Example: ${0} x86_64"
     exit 1
 fi
+set -e
+set -o pipefail
+set -x
 source $GITHUB_WORKSPACE/build/lib.sh
 init_lib $1
 
@@ -24,7 +28,7 @@ build_gdb() {
         CMD+="CPP_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-g++\" "
     fi
     CMD+="${BUILD_DIRECTORY}/binutils-gdb/configure --build=x86_64-linux-musl --host=$(get_host_triple) "
-    CMD+="--disable-shared --enable-static --enable-gdbserver --disable-nls"
+    CMD+="--disable-shared --enable-static --enable-gdbserver --disable-nls --disable-inprocess-agent"
 
     mkdir -p "${BUILD_DIRECTORY}/gdb_build"
     cd "${BUILD_DIRECTORY}/gdb_build/"

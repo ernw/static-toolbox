@@ -15,20 +15,10 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
 
       - name: Install build compiler
-        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
-        env:
-            ARCH: x86_64-linux-musl
-            HOST: http://musl.cc/
-            TEMP: /tmp
-            USER: 0
+        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
-        env:
-            ARCH: i686-linux-musl
-            HOST: http://musl.cc/
-            TEMP: /tmp
-            USER: 0
+        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh i686
 
       - name: Build GDB
         id: build_gdb
@@ -54,20 +44,7 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
 
       - name: Install build compiler
-        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
-        env:
-            ARCH: x86_64-linux-musl
-            HOST: http://musl.cc/
-            TEMP: /tmp
-            USER: 0
-
-      - name: Install dependencies workaround
-        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
-        env:
-            ARCH: x86_64-linux-musl
-            HOST: http://musl.cc/
-            TEMP: /tmp
-            USER: 0
+        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh x86_64
 
       - name: Build GDB
         id: build_gdb
@@ -94,20 +71,10 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
 
       - name: Install build compiler
-        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
-        env:
-            ARCH: x86_64-linux-musl
-            HOST: http://musl.cc/
-            TEMP: /tmp
-            USER: 0
+        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
-        env:
-            ARCH: arm-linux-musleabihf
-            HOST: http://musl.cc/
-            TEMP: /tmp
-            USER: 0
+        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh arm
 
       - name: Build gdb
         id: build_gdb
@@ -134,20 +101,10 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
 
       - name: Install build compiler
-        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
-        env:
-            ARCH: x86_64-linux-musl
-            HOST: http://musl.cc/
-            TEMP: /tmp
-            USER: 0
+        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: /bin/sh -c "cd / && curl -so ${ARCH}-cross.tgz ${HOST}/${ARCH}-cross.tgz && tar -xf ${ARCH}-cross.tgz && rm ${ARCH}-cross.tgz && cd ${ARCH}-cross"
-        env:
-            ARCH: aarch64-linux-musl
-            HOST: http://musl.cc/
-            TEMP: /tmp
-            USER: 0
+        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh aarch64
 
       - name: Patch headers
         run: |
