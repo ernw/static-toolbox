@@ -142,7 +142,7 @@ jobs:
             path: /tmp/releases
 
         - name: List Artifacts
-          run: ls -la /tmp/releases
+          run: ls -laR /tmp/releases
 
         - name: Tag Release
           run: |
@@ -154,5 +154,5 @@ jobs:
           with:
             name: Nmap v${{ needs.build-x86.outputs.version }}
             tag: nmap-v${{ needs.build-x86.outputs.version }}
-            artifacts: /tmp/releases/*
+            artifacts: "/tmp/releases/*/*"
             token: ${{ secrets.GITHUB_TOKEN }}
