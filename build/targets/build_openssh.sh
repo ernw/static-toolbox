@@ -43,7 +43,7 @@ main() {
         exit 1
     fi
     OPENSSH_VERSION=$(get_version "${BUILD_DIRECTORY}/openssh-portable/ssh -V 2>&1 | awk '{print \$1}' | sed 's/,//g'")
-    version_number=$(echo "$OPENSSH_VERSION" | cut -d"_" -f2)
+    version_number=$(echo "$OPENSSH_VERSION" | cut -d"-" -f2 | cut -d"_" -f2)
     cp "${BUILD_DIRECTORY}/openssh-portable/ssh" "${OUTPUT_DIRECTORY}/ssh${OPENSSH_VERSION}"
     cp "${BUILD_DIRECTORY}/openssh-portable/sshd" "${OUTPUT_DIRECTORY}/sshd${OPENSSH_VERSION}"
     echo "[+] Finished building OpenSSH ${CURRENT_ARCH}"
