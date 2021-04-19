@@ -154,5 +154,6 @@ jobs:
           with:
             files: /tmp/releases/*
             name: Nmap v${{ needs.build-x86.outputs.version }}
+            tag: nmap-v${{ needs.build-x86.outputs.version }}
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
