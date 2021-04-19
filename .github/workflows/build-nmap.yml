@@ -126,22 +126,23 @@ jobs:
     create-release:
       name: Create Nmap Release
       runs-on: ubuntu-latest
+      needs: [build-x86, build-x86_64, build-armhf, build-aarch64]
       steps:
         - name: Checkout
           uses: actions/checkout@v2
 
         - name: Prepare Environment
-          run: mkdir /data
+          run: mkdir /releases
 
         - name: Download Artifacts
           uses: actions/download-artifact@v2
           with:
-            path: /data
+            path: /releases
 
         - name: Create Release
           uses: softprops/action-gh-release@v1
           with:
-            files: /data/*
+            files: /releases/*
             name: Nmap v${{ needs.build-x86.outputs.PACKAGED_VERSION }}
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
