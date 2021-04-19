@@ -7,7 +7,7 @@ jobs:
       runs-on: ubuntu-latest
       container: muslcc/x86_64:i686-linux-musl
       outputs:
-        version: ${{ steps.build_socat.outputs.PACKAGED_NAME }}
+        version: ${{ steps.build_socat.outputs.PACKAGED_VERSION }}
       steps:
         - name: Checkout
           uses: actions/checkout@v2
@@ -137,13 +137,13 @@ jobs:
 
         - name: Tag Release
           run: |
-            git tag "${{ needs.build-x86.outputs.version }}"
-            git push origin "${{ needs.build-x86.outputs.version }}"
+            git tag "socat-v${{ needs.build-x86.outputs.version }}"
+            git push origin "socat-v${{ needs.build-x86.outputs.version }}"
 
         - name: Create Release
           uses: ncipollo/release-action@v1
           with:
-            name: ${{ needs.build-x86.outputs.version }}
-            tag: ${{ needs.build-x86.outputs.version }}
+            name: socat-v{{ needs.build-x86.outputs.version }}
+            tag: socat-v${{ needs.build-x86.outputs.version }}
             artifacts: "/tmp/releases/*/*"
             token: ${{ secrets.GITHUB_TOKEN }}
