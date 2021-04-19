@@ -47,12 +47,14 @@ main() {
     fi
     GDB_VERSION=$(get_version "${BUILD_DIRECTORY}/gdb_build/gdb/gdb --version |head -n1 |awk '{print \$4}'")
     GDBSERVER_VERSION=$(get_version "${BUILD_DIRECTORY}/gdb_build/gdbserver/gdbserver --version |head -n1 |awk '{print \$4}'")
+    version_number=$(echo "$GDB_VERSION" | cut -d"-" -f2)
     cp "${BUILD_DIRECTORY}/gdb_build/gdb/gdb" "${OUTPUT_DIRECTORY}/gdb${GDB_VERSION}"
     cp "${BUILD_DIRECTORY}/gdb_build/gdbserver/gdbserver" "${OUTPUT_DIRECTORY}/gdbserver${GDBSERVER_VERSION}"
     echo "[+] Finished building GDB ${CURRENT_ARCH}"
 
     echo ::set-output name=PACKAGED_NAME::"gdb${GDB_VERSION}"
     echo ::set-output name=PACKAGED_NAME_PATH::"/output/*"
+    echo ::set-output name=PACKAGED_VERSION::"${version_number}"
 }
 
 main
