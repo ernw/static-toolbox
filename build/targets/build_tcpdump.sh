@@ -1,12 +1,16 @@
 #!/bin/bash
-set -e
-set -x
-set -o pipefail
+if [ -z "$GITHUB_WORKSPACE" ];then
+    echo "GITHUB_WORKSPACE environemnt variable not set!"
+    exit 1
+fi
 if [ "$#" -ne 1 ];then
     echo "Usage: ${0} [x86|x86_64|armhf|aarch64]"
     echo "Example: ${0} x86_64"
     exit 1
 fi
+set -e
+set -o pipefail
+set -x
 source $GITHUB_WORKSPACE/build/lib.sh
 init_lib "$1"
 
@@ -31,11 +35,13 @@ main() {
     build_tcpdump
     local version
     version=$(get_version "${BUILD_DIRECTORY}/tcpdump/tcpdump --version 2>&1 | head -n1 | awk '{print \$3}'")
+    version_number=$(echo "$version" | cut -d"-" -f2)
     cp "${BUILD_DIRECTORY}/tcpdump/tcpdump" "${OUTPUT_DIRECTORY}/tcpdump"
     echo "[+] Finished building tcpdump ${CURRENT_ARCH}"
 
     echo ::set-output name=PACKAGED_NAME::"tcpdump${version}"
     echo ::set-output name=PACKAGED_NAME_PATH::"${OUTPUT_DIRECTORY}/*"
+    echo ::set-output name=PACKAGED_VERSION::"${version_number}"
 }
 
 main
