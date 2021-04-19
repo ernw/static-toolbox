@@ -123,42 +123,42 @@ jobs:
             name: ${{ steps.build_gdb.outputs.PACKAGED_NAME }}
             path: ${{ steps.build_gdb.outputs.PACKAGED_NAME_PATH }}
 
-    create-release:
-      name: Create GDB & gdbserver Release
-      runs-on: ubuntu-latest
-      needs: [build-x86, build-x86_64, build-armhf, build-aarch64]
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
+  create-release:
+    name: Create GDB & gdbserver Release
+    runs-on: ubuntu-latest
+    needs: [build-x86, build-x86_64, build-armhf, build-aarch64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-        - name: Prepare Environment
-          run: mkdir /tmp/releases
+      - name: Prepare Environment
+        run: mkdir /tmp/releases
 
-        - name: Download Artifacts
-          uses: actions/download-artifact@v2
-          with:
-            path: /tmp/releases
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: /tmp/releases
 
-        - name: List Artifacts
-          run: ls -laR /tmp/releases
+      - name: List Artifacts
+        run: ls -laR /tmp/releases
 
-        - name: Tag Release
-          id: tag_release
-          run: |
-            set +e
-            if [ $(git tag "gdb-v${{ needs.build-x86.outputs.version }}") ];then
-              git push origin "gdb-v${{ needs.build-x86.outputs.version }}"
-              echo ::set-output name=NEW_RELEASE::"true"
-            else
-              echo "Tag for version ${{ needs.build-x86.outputs.version }} already exists. Skipping release creation."
-              echo ::set-output name=NEW_RELEASE::"false"
-            fi
+      - name: Tag Release
+        id: tag_release
+        run: |
+          set +e
+          if [ $(git tag "gdb-v${{ needs.build-x86.outputs.version }}") ];then
+            git push origin "gdb-v${{ needs.build-x86.outputs.version }}"
+            echo ::set-output name=NEW_RELEASE::"true"
+          else
+            echo "Tag for version ${{ needs.build-x86.outputs.version }} already exists. Skipping release creation."
+            echo ::set-output name=NEW_RELEASE::"false"
+          fi
 
-        - name: Create Release
-          uses: ncipollo/release-action@v1
-          if: ${{ steps.tag_release.outputs.NEW_RELEASE == 'true' }}
-          with:
-            name: gdb-v${{ needs.build-x86.outputs.version }}
-            tag: gdb-v${{ needs.build-x86.outputs.version }}
-            artifacts: "/tmp/releases/*/*"
-            token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        if: ${{ steps.tag_release.outputs.NEW_RELEASE == 'true' }}
+        with:
+          name: gdb-v${{ needs.build-x86.outputs.version }}
+          tag: gdb-v${{ needs.build-x86.outputs.version }}
+          artifacts: "/tmp/releases/*/*"
+          token: ${{ secrets.GITHUB_TOKEN }}
