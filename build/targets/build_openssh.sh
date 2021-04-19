@@ -1,19 +1,23 @@
 #!/bin/bash
-set -e
-set -x
-set -o pipefail
+if [ -z "$GITHUB_WORKSPACE" ];then
+    echo "GITHUB_WORKSPACE environemnt variable not set!"
+    exit 1
+fi
 if [ "$#" -ne 1 ];then
     echo "Usage: ${0} [x86|x86_64|armhf|aarch64]"
     echo "Example: ${0} x86_64"
     exit 1
 fi
+set -e
+set -o pipefail
+set -x
 source $GITHUB_WORKSPACE/build/lib.sh
 init_lib $1
 
 build_openssh() {
     fetch "https://github.com/openssh/openssh-portable.git" "${BUILD_DIRECTORY}/openssh-portable" git
     cd "${BUILD_DIRECTORY}/openssh-portable"
-    git checkout V_7_9
+    git checkout V_8_6_P1
     git clean -fdx
     autoreconf -i
     CC="gcc ${GCC_OPTS}" \
