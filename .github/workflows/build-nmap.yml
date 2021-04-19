@@ -142,6 +142,11 @@ jobs:
         - name: List Artifacts
           run: ls -la /tmp/releases
 
+        - name: Tag Release
+          run: |
+            git tag "nmap-v${{ needs.build-x86.outputs.PACKAGED_VERSION }}"
+            git push origin "nmap-v${{ needs.build-x86.outputs.PACKAGED_VERSION }}"
+
         - name: Create Release
           uses: softprops/action-gh-release@v1
           with:
