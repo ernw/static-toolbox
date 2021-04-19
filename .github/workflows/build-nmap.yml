@@ -122,3 +122,26 @@ jobs:
           with:
               name: ${{ steps.package_nmap.outputs.PACKAGED_ZIP }}
               path: ${{ steps.package_nmap.outputs.PACKAGED_ZIP_PATH }}
+
+    create-release:
+      name: Create Nmap Release
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Prepare Environment
+          run: mkdir /data
+
+        - name: Download Artifacts
+          uses: actions/download-artifact@v2
+          with:
+            path: /data
+
+        - name: Create Release
+          uses: softprops/action-gh-release@v1
+          with:
+            files: /data/*
+            name: Nmap v${{ jobs.build-x86.outputs.PACKAGED_VERSION }}
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

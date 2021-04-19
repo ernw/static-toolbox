@@ -61,3 +61,5 @@ zip -r -q "${output}/${ZIP}" .
 cp "${output}/${ZIP}" /packaged
 echo ::set-output name=PACKAGED_ZIP::${ZIP}
 echo ::set-output name=PACKAGED_ZIP_PATH::"/packaged/${ZIP}"
+
+echo ::set-output name=PACKAGED_VERSION::${version}
