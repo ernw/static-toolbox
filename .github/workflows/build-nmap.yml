@@ -146,11 +146,18 @@ jobs:
 
         - name: Tag Release
           run: |
-            git tag "nmap-v${{ needs.build-x86.outputs.version }}"
-            git push origin "nmap-v${{ needs.build-x86.outputs.version }}"
+            set +e
+            if [ $(git tag "nmap-v${{ needs.build-x86.outputs.version }}") ];then
+              git push origin "nmap-v${{ needs.build-x86.outputs.version }}"
+              echo ::set-output name=NEW_RELEASE::"true"
+            else
+              echo "Tag for version ${{ needs.build-x86.outputs.version }} already exists. Skipping release creation."
+              echo ::set-output name=NEW_RELEASE::"false"
+            fi
 
         - name: Create Release
           uses: ncipollo/release-action@v1
+          if: ${{ steps.tag_release.outputs.NEW_RELEASE == 'true' }}
           with:
             name: Nmap v${{ needs.build-x86.outputs.version }}
             tag: nmap-v${{ needs.build-x86.outputs.version }}
