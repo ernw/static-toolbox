@@ -148,7 +148,7 @@ jobs:
 
         - name: Create Release
           uses: ncipollo/release-action@v1
-          condition: ${{ steps.tag_release.outputs.NEW_RELEASE == 'true' }}
+          if: ${{ steps.tag_release.outputs.NEW_RELEASE == 'true' }}
           with:
             name: socat-v${{ needs.build-x86.outputs.version }}
             tag: socat-v${{ needs.build-x86.outputs.version }}
