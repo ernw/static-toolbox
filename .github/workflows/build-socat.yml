@@ -136,12 +136,19 @@ jobs:
           run: ls -laR /tmp/releases
 
         - name: Tag Release
+          id: tag_release
           run: |
-            git tag "socat-v${{ needs.build-x86.outputs.version }}"
-            git push origin "socat-v${{ needs.build-x86.outputs.version }}"
+            if git tag "socat-v${{ needs.build-x86.outputs.version }}";then
+              git push origin "socat-v${{ needs.build-x86.outputs.version }}"
+              echo ::set-output name=NEW_RELEASE::"true"
+            else
+              echo "Tag for version ${{ needs.build-x86.outputs.version }} already exists. Skipping release creation."
+              echo ::set-output name=NEW_RELEASE::"false"
+            fi
 
         - name: Create Release
           uses: ncipollo/release-action@v1
+          condition: ${{ steps.tag_release.outputs.NEW_RELEASE == 'true' }}
           with:
             name: socat-v${{ needs.build-x86.outputs.version }}
             tag: socat-v${{ needs.build-x86.outputs.version }}
