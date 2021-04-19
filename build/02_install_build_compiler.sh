@@ -5,13 +5,19 @@ if [ $# -ne 1 ];then
 fi
 ARCH="${1,,}"
 case $ARCH in
-    x86|x86_64|i686|arm|armhf|aarch64)
-    ARCH="${ARCH}-linux-musl"
-    ;;
+    x86_64|i686|aarch64)
+        ARCH="${ARCH}-linux-musl"
+        ;;
+    x86)
+        ARCH="i686-linux-musl"
+        ;;
+    arm)
+        ARCH="arm-linux-musleabihf"
+        ;;
     *)
-    echo "Invalid arch ${ARCH}"
-    exit 1
-    ;;
+        echo "Invalid arch ${ARCH}"
+        exit 1
+        ;;
 esac
 HOST=http://musl.cc
 cd /
