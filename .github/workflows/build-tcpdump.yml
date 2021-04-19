@@ -67,7 +67,7 @@ jobs:
               name: ${{ steps.build_tcpdump.outputs.PACKAGED_NAME }}
               path: ${{ steps.build_tcpdump.outputs.PACKAGED_NAME_PATH }}
 
-    build:
+    build-aarch64:
       name: Build tcpdump AARCH64
       runs-on: ubuntu-latest
       container: muslcc/x86_64:aarch64-linux-musl
@@ -91,7 +91,7 @@ jobs:
     create-release:
       name: Create tcpdump Release
       runs-on: ubuntu-latest
-      needs: [build-x86, build-x86_64, build-armhf]
+      needs: [build-x86, build-x86_64, build-armhf, build-aarch64]
       steps:
         - name: Checkout
           uses: actions/checkout@v2
@@ -115,7 +115,7 @@ jobs:
         - name: Create Release
           uses: ncipollo/release-action@v1
           with:
-            name: tcpdump-v{{ needs.build-x86.outputs.version }}
+            name: tcpdump-v${{ needs.build-x86.outputs.version }}
             tag: tcpdump-v${{ needs.build-x86.outputs.version }}
             artifacts: "/tmp/releases/*/*"
             token: ${{ secrets.GITHUB_TOKEN }}
