@@ -143,7 +143,7 @@ jobs:
         - name: Create Release
           uses: ncipollo/release-action@v1
           with:
-            name: socat-v{{ needs.build-x86.outputs.version }}
+            name: socat-v${{ needs.build-x86.outputs.version }}
             tag: socat-v${{ needs.build-x86.outputs.version }}
             artifacts: "/tmp/releases/*/*"
             token: ${{ secrets.GITHUB_TOKEN }}
