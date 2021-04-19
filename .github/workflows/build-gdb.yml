@@ -49,7 +49,6 @@ jobs:
       - name: Build GDB
         id: build_gdb
         run: |
-          export PATH="$PATH:/x86_64-linux-musl-cross/bin"
           $GITHUB_WORKSPACE/build/targets/build_gdb.sh x86_64
         
       - name: Upload artifacts
