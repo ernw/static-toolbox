@@ -15,10 +15,10 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
 
       - name: Install build compiler
-        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh x86_64
+        run: $GITHUB_WORKSPACE/build/02_install_build_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh i686
+        run: $GITHUB_WORKSPACE/build/02_install_build_compiler.sh i686
 
       - name: Build GDB
         id: build_gdb
@@ -44,7 +44,7 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
 
       - name: Install build compiler
-        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh x86_64
+        run: $GITHUB_WORKSPACE/build/02_install_build_compiler.sh x86_64
 
       - name: Build GDB
         id: build_gdb
@@ -71,10 +71,10 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
 
       - name: Install build compiler
-        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh x86_64
+        run: $GITHUB_WORKSPACE/build/02_install_build_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh arm
+        run: $GITHUB_WORKSPACE/build/02_install_build_compiler.sh arm
 
       - name: Build gdb
         id: build_gdb
@@ -101,10 +101,10 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash build/install_deps_alpine.sh
 
       - name: Install build compiler
-        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh x86_64
+        run: $GITHUB_WORKSPACE/build/02_install_build_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: $GITHUB_WORKSPACE/02_install_build_compiler.sh aarch64
+        run: $GITHUB_WORKSPACE/build/02_install_build_compiler.sh aarch64
 
       - name: Patch headers
         run: |
