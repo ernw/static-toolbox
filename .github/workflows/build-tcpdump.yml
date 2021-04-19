@@ -91,7 +91,7 @@ jobs:
     create-release:
       name: Create tcpdump Release
       runs-on: ubuntu-latest
-      needs: [build-x86, build-x86_64, build-armhf, build-aarch64]
+      needs: [build-x86, build-x86_64, build-armhf]
       steps:
         - name: Checkout
           uses: actions/checkout@v2
