@@ -142,6 +142,6 @@ jobs:
           uses: softprops/action-gh-release@v1
           with:
             files: /data/*
-            name: Nmap v${{ jobs.build-x86.outputs.PACKAGED_VERSION }}
+            name: Nmap v${{ needs.build-x86.outputs.PACKAGED_VERSION }}
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
