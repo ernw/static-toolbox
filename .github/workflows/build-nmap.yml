@@ -147,7 +147,7 @@ jobs:
         - name: Tag Release
           run: |
             set +e
-            git tag -l
+            echo "Version found: $(git tag -l | grep nmap-v${{ needs.build-x86.outputs.version }} | wc -l)"
             if [[ $(git tag -l | grep nmap-v${{ needs.build-x86.outputs.version }} | wc -l) -gt 0 ]]; then
               echo "Tag for nmap-v${{ needs.build-x86.outputs.version }} already exists. Skipping release creation."
               echo ::set-output name=NEW_RELEASE::"false"
