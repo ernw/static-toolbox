@@ -147,7 +147,7 @@ jobs:
         - name: Tag Release
           run: |
             set +e
-            if git show-ref --tags --quiet --verify  "nmap-v${{ needs.build-x86.outputs.version }}"; then
+            if git show-ref --tags --quiet --verify -- "refs/tags/nmap-v${{ needs.build-x86.outputs.version }}"; then
               echo "Tag for nmap-v${{ needs.build-x86.outputs.version }} already exists. Skipping release creation."
               echo ::set-output name=NEW_RELEASE::"false"
             else
