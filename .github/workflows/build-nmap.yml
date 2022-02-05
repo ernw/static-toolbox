@@ -145,12 +145,15 @@ jobs:
           run: ls -laR /tmp/releases
 
         - name: Tag Release
+          id: tag_release
           run: |
             set +e
-            if git rev-list "nmap-v${{ needs.build-x86.outputs.version }}".. >/dev/null;then
+            git fetch --quiet --prune --unshallow --tags
+            if [[ $(git tag -l | grep nmap-v${{ needs.build-x86.outputs.version }} | wc -l) -gt 0 ]]; then
               echo "Tag for nmap-v${{ needs.build-x86.outputs.version }} already exists. Skipping release creation."
               echo ::set-output name=NEW_RELEASE::"false"
             else
+              echo "Tag for nmap-v${{ needs.build-x86.outputs.version }} missing. Starting release creation."
               git tag "nmap-v${{ needs.build-x86.outputs.version }}"
               git push origin "nmap-v${{ needs.build-x86.outputs.version }}"
               echo ::set-output name=NEW_RELEASE::"true"
