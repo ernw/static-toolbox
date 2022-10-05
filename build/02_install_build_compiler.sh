@@ -3,7 +3,7 @@ if [ $# -ne 1 ];then
     echo "Missing arch"
     exit 1
 fi
-ARCH="${1,,}"
+ARCH="${1}"
 case $ARCH in
     x86_64|i686|aarch64)
         ARCH="${ARCH}-linux-musl"
