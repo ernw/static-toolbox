@@ -18,8 +18,7 @@ build_gdb() {
     fetch "$GIT_BINUTILS_GDB" "${BUILD_DIRECTORY}/binutils-gdb" git
     cd "${BUILD_DIRECTORY}/binutils-gdb/" || { echo "Cannot cd to ${BUILD_DIRECTORY}/binutils-gdb/"; exit 1; }
     git clean -fdx
-    git checkout gdb-10.1-release
-
+    git checkout gdb-12.1-release
     CMD="CFLAGS=\"${GCC_OPTS}\" "
     CMD+="CXXFLAGS=\"${GXX_OPTS}\" "
     CMD+="LDFLAGS=\"-static\" "
