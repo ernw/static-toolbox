@@ -23,9 +23,9 @@ The following table shows the building status for the current toolset. The follo
 
 | Tool | Status |
 | ---- | ------ |
-|[Nmap](https://github.com/ernw/static-toolbox/actions?query=workflow%3A%22Nmap%22)|![Nmap](https://github.com/ernw/static-toolbox/workflows/Nmap/badge.svg)|
-|[OpenSSH](https://github.com/ernw/static-toolbox/actions?query=workflow%3A%22OpenSSH%22)|![OpenSSH](https://github.com/ernw/static-toolbox/workflows/OpenSSH/badge.svg)|
-|[socat](https://github.com/ernw/static-toolbox/actions?query=workflow%3A%22socat%22)|![socat](https://github.com/ernw/static-toolbox/workflows/socat/badge.svg)|
-|[GDB & gdbserver](https://github.com/ernw/static-toolbox/actions?query=workflow%3AGDB)|![GDB & gdbserver](https://github.com/ernw/static-toolbox/workflows/GDB%20&%20gdbserver/badge.svg)|
-|[tcpdump](https://github.com/ernw/static-toolbox/actions?query=workflow%3A%22tcpdump%22)|![tcpdump](https://github.com/ernw/static-toolbox/workflows/tcpdump/badge.svg)|
+|[Nmap](https://github.com/takeshixx/static-toolbox/actions?query=workflow%3A%22Nmap%22)|![Nmap](https://github.com/takeshixx/static-toolbox/workflows/Nmap/badge.svg)|
+|[OpenSSH](https://github.com/takeshixx/static-toolbox/actions?query=workflow%3A%22OpenSSH%22)|![OpenSSH](https://github.com/takeshixx/static-toolbox/workflows/OpenSSH/badge.svg)|
+|[socat](https://github.com/takeshixx/static-toolbox/actions?query=workflow%3A%22socat%22)|![socat](https://github.com/takeshixx/static-toolbox/workflows/socat/badge.svg)|
+|[GDB & gdbserver](https://github.com/takeshixx/static-toolbox/actions?query=workflow%3AGDB)|![GDB & gdbserver](https://github.com/takeshixx/static-toolbox/workflows/GDB%20&%20gdbserver/badge.svg)|
+|[tcpdump](https://github.com/takeshixx/static-toolbox/actions?query=workflow%3A%22tcpdump%22)|![tcpdump](https://github.com/takeshixx/static-toolbox/workflows/tcpdump/badge.svg)|
 

@@ -17,7 +17,7 @@ init_lib $1
 build_openssh() {
     fetch "https://github.com/openssh/openssh-portable.git" "${BUILD_DIRECTORY}/openssh-portable" git
     cd "${BUILD_DIRECTORY}/openssh-portable"
-    git checkout V_8_6_P1
+    git checkout V_9_1_P1
     git clean -fdx
     autoreconf -i
     CC="gcc ${GCC_OPTS}" \
