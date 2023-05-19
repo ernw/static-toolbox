@@ -24,7 +24,7 @@ build_strace() {
     if [ "$CURRENT_ARCH" != "x86_64" ];then
         CMD+="CC_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc\" "
         CMD+="CPP_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-g++ -E\" "
-        CMD+="CXX_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-g++ -E\" "
+        CMD+="CXX_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-g++\" "
     fi
     CMD+="./configure --disable-mpers --host=$(get_host_triple)"
     eval "$CMD"

@@ -1,8 +1,6 @@
 name: strace
 on:
-  push:
-    branches:
-      - strace
+  workflow_dispatch
 jobs:
     build-x86:
       name: Build strace x86
