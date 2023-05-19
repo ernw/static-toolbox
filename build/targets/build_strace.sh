@@ -40,9 +40,9 @@ main() {
     cp "${BUILD_DIRECTORY}/strace/src/strace" "${OUTPUT_DIRECTORY}/strace${version}"
     echo "[+] Finished building strace ${CURRENT_ARCH}"
 
-    echo ::set-output name=PACKAGED_NAME::"strace${version}"
-    echo ::set-output name=PACKAGED_NAME_PATH::"${OUTPUT_DIRECTORY}/*"
-    echo ::set-output name=PACKAGED_VERSION::"${version_number}"
+    echo "PACKAGED_NAME=strace${version}" >> $GITHUB_OUTPUT
+    echo "PACKAGED_NAME_PATH=${OUTPUT_DIRECTORY}/*" >> $GITHUB_OUTPUT
+    echo "PACKAGED_VERSION=${version_number}" >> $GITHUB_OUTPUT
 }
 
 main
