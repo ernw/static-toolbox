@@ -53,13 +53,13 @@ cd "$tmp_dir"
 TARBALL="nmap-${version}-${arch}-portable.tar.gz"
 tar czf "${output}/${TARBALL}" -C "$tmp_dir" .
 cp "${output}/${TARBALL}" /packaged
-echo ::set-output name=PACKAGED_TARBALL::${TARBALL}
-echo ::set-output name=PACKAGED_TARBALL_PATH::"/packaged/${TARBALL}"
+echo "PACKAGED_TARBALL=${TARBALL}" >> $GITHUB_OUTPUT
+echo "PACKAGED_TARBALL_PATH=/packaged/${TARBALL}"  >> $GITHUB_OUTPUT
 
 ZIP="nmap-${version}-${arch}-portable.zip"
 zip -r -q "${output}/${ZIP}" .
 cp "${output}/${ZIP}" /packaged
-echo ::set-output name=PACKAGED_ZIP::${ZIP}
-echo ::set-output name=PACKAGED_ZIP_PATH::"/packaged/${ZIP}"
+echo "PACKAGED_ZIP=${ZIP}" >> $GITHUB_OUTPUT
+echo "PACKAGED_ZIP_PATH=/packaged/${ZIP}" >> $GITHUB_OUTPUT
 
-echo ::set-output name=PACKAGED_VERSION::${version}
+echo "PACKAGED_VERSION=${version}" >> $GITHUB_OUTPUT

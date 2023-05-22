@@ -50,8 +50,8 @@ main() {
     cp "${BUILD_DIRECTORY}/tcpreplay/tcpreplay" "${OUTPUT_DIRECTORY}/tcpreplay"
     echo "[+] Finished building tcpreplay ${CURRENT_ARCH}"
 
-    echo ::set-output name=PACKAGED_NAME::"tcpreplay${version}"
-    echo ::set-output name=PACKAGED_NAME_PATH::"${OUTPUT_DIRECTORY}/*"
+    echo "PACKAGED_NAME=tcpreplay${version}"
+    echo "PACKAGED_NAME_PATH=${OUTPUT_DIRECTORY}/*"
 }
 
 main
