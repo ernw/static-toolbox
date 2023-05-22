@@ -112,11 +112,11 @@ jobs:
             set +e
             if git rev-list "tcpdump-v${{ needs.build-x86.outputs.version }}".. >/dev/null;then
               echo "Tag for tcpdump-v${{ needs.build-x86.outputs.version }} already exists. Skipping release creation."
-              echo ::set-output name=NEW_RELEASE::"false"
+              echo "NEW_RELEASE=false" >> $GITHUB_OUTPUT
             else
               git tag "tcpdump-v${{ needs.build-x86.outputs.version }}"
               git push origin "tcpdump-v${{ needs.build-x86.outputs.version }}"
-              echo ::set-output name=NEW_RELEASE::"true"
+              echo "NEW_RELEASE=true" >> $GITHUB_OUTPUT
             fi
 
         - name: Create Release
