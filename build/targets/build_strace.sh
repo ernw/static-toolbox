@@ -10,34 +10,39 @@ fi
 source $GITHUB_WORKSPACE/build/lib.sh
 init_lib "$1"
 
+VERSION="v6.3"
+
 build_strace() {
     fetch "https://github.com/strace/strace" "${BUILD_DIRECTORY}/strace" git
     cd "${BUILD_DIRECTORY}/strace"
     git clean -fdx
-    git checkout v5.7
+    git checkout "$VERSION"
     ./bootstrap
     CMD="CFLAGS=\"${GCC_OPTS}\" "
     CMD+="CXXFLAGS=\"${GXX_OPTS}\" "
     CMD+="LDFLAGS=\"-static -pthread\" "
-    if [ "$CURRENT_ARCH" != "x86" ] && [ "$CURRENT_ARCH" != "x86_64" ];then
-        CMD+="CC_FOR_BUILD=\"/i686-linux-musl-cross/bin/i686-linux-musl-gcc\" "
-        CMD+="CPP_FOR_BUILD=\"/i686-linux-musl-cross/bin/i686-linux-musl-g++\" "
+    if [ "$CURRENT_ARCH" != "x86_64" ];then
+        CMD+="CC_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc\" "
+        CMD+="CPP_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-g++ -E\" "
+        CMD+="CXX_FOR_BUILD=\"/x86_64-linux-musl-cross/bin/x86_64-linux-musl-g++\" "
     fi
-    CMD+="./configure --host=i486-linux-musl --target=$(get_host_triple)"
+    CMD+="./configure --disable-mpers --host=$(get_host_triple)"
     eval "$CMD"
     make CFLAGS="-w" -j4
-    strip strace
+    strip "${BUILD_DIRECTORY}/strace/src/strace"
 }
 
 main() {
     build_strace
     local version
-    version=$(get_version "${BUILD_DIRECTORY}/strace/strace --version 2>&1 | head -n1 | awk '{print \$4}'")
-    cp "${BUILD_DIRECTORY}/strace/strace" "${OUTPUT_DIRECTORY}/strace"
+    version=$(get_version "${BUILD_DIRECTORY}/strace/src/strace -V 2>&1 | head -n1 | awk '{print \$4}'")
+    version_number=$(echo "$version" | cut -d"-" -f2)
+    cp "${BUILD_DIRECTORY}/strace/src/strace" "${OUTPUT_DIRECTORY}/strace${version}"
     echo "[+] Finished building strace ${CURRENT_ARCH}"
 
-    echo ::set-output name=PACKAGED_NAME::"strace${version}"
-    echo ::set-output name=PACKAGED_NAME_PATH::"${OUTPUT_DIRECTORY}/*"
+    echo "PACKAGED_NAME=strace${version}" >> $GITHUB_OUTPUT
+    echo "PACKAGED_NAME_PATH=${OUTPUT_DIRECTORY}/*" >> $GITHUB_OUTPUT
+    echo "PACKAGED_VERSION=${version_number}" >> $GITHUB_OUTPUT
 }
 
 main
