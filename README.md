@@ -29,5 +29,3 @@ The following table shows the building status for the current toolset. The follo
 |[GDB & gdbserver](https://github.com/ernw/static-toolbox/actions?query=workflow%3AGDB)|![GDB & gdbserver](https://github.com/ernw/static-toolbox/workflows/GDB%20&%20gdbserver/badge.svg)|
 |[tcpdump](https://github.com/ernw/static-toolbox/actions?query=workflow%3A%22tcpdump%22)|![tcpdump](https://github.com/ernw/static-toolbox/workflows/tcpdump/badge.svg)|
 |[strace](https://github.com/ernw/static-toolbox/actions?query=workflow%3A%22strace%22)|![strace](https://github.com/ernw/static-toolbox/workflows/strace/badge.svg)|
-
-
