@@ -47,6 +47,10 @@ get_host_triple(){
         host="arm-linux-musleabihf"
     elif [ "$CURRENT_ARCH" == "aarch64" ];then
         host="aarch64-linux-musl"
+    elif [ "$CURRENT_ARCH" == "ppc32" ];then
+        host="powerpc-linux-musl"
+    elif [ "$CURRENT_ARCH" == "ppc64" ];then
+        host="powerpc64-linux-musl"
     fi
     echo $host
 }
@@ -145,6 +149,20 @@ get_version(){
         else
             echo "qemu-aarch64 not found, skipping AARCH64 version checks." >&2
         fi
+    elif [ "$CURRENT_ARCH" == "ppc32" ];then
+        if which qemu-ppc 1>&2 2>/dev/null;then
+            cmd="qemu-ppc ${cmd}"
+            version+=$(eval "$cmd")
+        else
+            echo "qemu-ppc not found, skipping ppc32 version checks." >&2
+        fi
+    elif [ "$CURRENT_ARCH" == "ppc64" ];then
+        if which qemu-ppc64 1>&2 2>/dev/null;then
+            cmd="qemu-ppc64 ${cmd}"
+            version+=$(eval "$cmd")
+        else
+            echo "qemu-ppc64 not found, skipping ppc64 version checks." >&2
+        fi
     else
         version+=$(eval "$cmd")
     fi
@@ -214,6 +232,10 @@ lib_build_openssl(){
         openssl_arch="linux-x86_64"
     elif [ "${CURRENT_ARCH}" == "aarch64" ];then
         openssl_arch="linux-generic64"
+    elif [ "${CURRENT_ARCH}" == "ppc32" ];then
+        openssl_arch="linux-ppc"
+    elif [ "${CURRENT_ARCH}" == "ppc64" ];then
+        openssl_arch="linux-ppc"
     fi
     CFLAGS="${GCC_OPTS}" \
         ./Configure \
