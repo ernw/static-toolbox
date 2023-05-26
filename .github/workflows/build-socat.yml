@@ -1,8 +1,6 @@
 name: socat
 on:
-  push:
-    branches:
-      - socat-ppc
+  workflow_dispatch
 jobs:
     build-x86:
       name: Build socat x86
