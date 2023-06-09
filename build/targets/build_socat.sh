@@ -4,7 +4,7 @@ if [ -z "$GITHUB_WORKSPACE" ];then
     exit 1
 fi
 if [ "$#" -ne 1 ];then
-    echo "Usage: ${0} [x86|x86_64|armhf|aarch64]"
+    echo "Usage: ${0} [x86|x86_64|armhf|aarch64|ppc32|ppc64]"
     echo "Example: ${0} x86_64"
     exit 1
 fi
