@@ -24,6 +24,7 @@ build_socat() {
         CPPFLAGS="-I${BUILD_DIRECTORY} -I${BUILD_DIRECTORY}/openssl/include -DNETDB_INTERNAL=-1" \
         LDFLAGS="-L${BUILD_DIRECTORY}/readline -L${BUILD_DIRECTORY}/ncurses/lib -L${BUILD_DIRECTORY}/openssl" \
         ./configure \
+            --enable-openssl-method \
             --host="$(get_host_triple)"
     make -j4
     strip socat
