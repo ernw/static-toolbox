@@ -128,6 +128,8 @@ jobs:
       name: Create strace Release
       runs-on: ubuntu-latest
       needs: [build-x86, build-x86_64, build-armhf, build-aarch64]
+      permissions:
+        contents: write
       steps:
         - name: Checkout
           uses: actions/checkout@v2
@@ -143,11 +145,14 @@ jobs:
         - name: List Artifacts
           run: ls -laR /tmp/releases
 
+        - name: Fetch tags
+          run: git fetch --tags --prune --quiet
+
         - name: Tag Release
           id: tag_release
           run: |
             set +e
-            if git rev-list "strace-v${{ needs.build-x86.outputs.version }}".. >/dev/null;then
+            if git rev-list "strace-v${{ needs.build-x86.outputs.version }}" >/dev/null;then
               echo "Tag for strace-v${{ needs.build-x86.outputs.version }} already exists. Skipping release creation."
               echo "NEW_RELEASE=false" >> $GITHUB_OUTPUT
             else
